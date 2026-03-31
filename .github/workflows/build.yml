@@ -42,12 +42,20 @@ jobs:
     steps:
       - name: Checkout
         uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
 
       - name: Extract version from manifest
         id: version
         run: |
           VERSION=$(jq -r '.version' manifest.json)
           echo "version=$VERSION" >> "$GITHUB_OUTPUT"
+
+      - name: Generate release notes
+        uses: orhun/git-cliff-action@v4
+        id: changelog
+        with:
+          args: --latest --strip header
 
       - name: Setup Node.js
         uses: actions/setup-node@v4
@@ -65,10 +73,6 @@ jobs:
         with:
           tag_name: v${{ steps.version.outputs.version }}
           name: UUID Clipper v${{ steps.version.outputs.version }}
-          body: |
-            ## UUID Clipper v${{ steps.version.outputs.version }}
-
-            Download the `.zip` and submit to [AMO](https://addons.mozilla.org/developers/) for signing,
-            or load it as a temporary add-on via `about:debugging`.
+          body: ${{ steps.changelog.outputs.content }}
           files: dist/*.zip
           make_latest: true
