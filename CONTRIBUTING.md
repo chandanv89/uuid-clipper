@@ -5,7 +5,7 @@ Thanks for your interest in contributing! This is a simple extension, so the pro
 ## Getting Started
 
 1. Fork and clone the repository
-2. Install [web-ext](https://github.com/nicol---as/web-ext) if you haven't already:
+2. Install [web-ext](https://github.com/mozilla/web-ext) if you haven't already:
    ```sh
    npm install -g web-ext
    ```
@@ -17,7 +17,7 @@ Thanks for your interest in contributing! This is a simple extension, so the pro
 ## Making Changes
 
 - Keep it simple — the goal of this extension is to stay minimal
-- Test your changes in Firefox 140+ before submitting
+- Test your changes in Firefox 95+ before submitting
 - Run `web-ext lint` to check for manifest or code issues:
   ```sh
   web-ext lint --source-dir .

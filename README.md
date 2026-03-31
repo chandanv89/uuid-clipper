@@ -9,11 +9,7 @@ A minimal Firefox extension that generates a random UUID and copies it to your c
 - Brief ✓ badge confirms the copy
 - Zero data collection, zero network requests
 
-## Screenshots
-
-| Default                                | Clicked                                |
-| -------------------------------------- | -------------------------------------- |
-| ![Default](assets/toolbar-default.png) | ![Clicked](assets/toolbar-clicked.png) |
+<div style="text-align:center"><img src="assets/demo.gif" /></div>
 
 ## Installation
 
@@ -35,8 +31,8 @@ _(Link to be added once approved)_
 
 ### Prerequisites
 
-- Firefox 140+
-- [web-ext](https://github.com/nicol---as/web-ext) (optional, for building/testing)
+- Firefox 95+
+- [web-ext](https://github.com/mozilla/web-ext) (optional, for building/testing)
 
 ```sh
 npm install -g web-ext
