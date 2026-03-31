@@ -1,0 +1,74 @@
+name: Build & Release
+
+on:
+  push:
+    branches:
+      - "**"
+
+permissions:
+  contents: write
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: "20"
+
+      - name: Install web-ext
+        run: npm install -g web-ext
+
+      - name: Lint
+        run: web-ext lint --source-dir .
+
+      - name: Build
+        run: web-ext build --source-dir . --artifacts-dir dist --overwrite-dest
+
+      - name: Upload build artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: uuid-clipper
+          path: dist/*.zip
+
+  release:
+    needs: build
+    if: github.ref == 'refs/heads/main'
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Extract version from manifest
+        id: version
+        run: |
+          VERSION=$(jq -r '.version' manifest.json)
+          echo "version=$VERSION" >> "$GITHUB_OUTPUT"
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: "20"
+
+      - name: Install web-ext
+        run: npm install -g web-ext
+
+      - name: Build
+        run: web-ext build --source-dir . --artifacts-dir dist --overwrite-dest
+
+      - name: Create GitHub Release
+        uses: softprops/action-gh-release@v2
+        with:
+          tag_name: v${{ steps.version.outputs.version }}
+          name: UUID Clipper v${{ steps.version.outputs.version }}
+          body: |
+            ## UUID Clipper v${{ steps.version.outputs.version }}
+
+            Download the `.zip` and submit to [AMO](https://addons.mozilla.org/developers/) for signing,
+            or load it as a temporary add-on via `about:debugging`.
+          files: dist/*.zip
+          make_latest: true
