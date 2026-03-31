@@ -10,3 +10,32 @@ browser.browserAction.onClicked.addListener(async () => {
     console.error("Failed to copy UUID:", err);
   }
 });
+
+browser.contextMenus.create({
+  id: "paste-uuid",
+  title: "Paste new UUID",
+  contexts: ["editable"]
+});
+
+browser.contextMenus.onClicked.addListener((info, tab) => {
+  if (info.menuItemId === "paste-uuid") {
+    const uuid = crypto.randomUUID();
+    browser.tabs.executeScript(tab.id, {
+      code: `
+        (() => {
+          const uuid = "${uuid}";
+          const el = document.activeElement;
+          if (el.isContentEditable) {
+            document.execCommand("insertText", false, uuid);
+          } else {
+            const start = el.selectionStart;
+            const end = el.selectionEnd;
+            el.value = el.value.substring(0, start) + uuid
+              + el.value.substring(end);
+            el.selectionStart = el.selectionEnd = start + uuid.length;
+          }
+        })();
+      `
+    });
+  }
+});

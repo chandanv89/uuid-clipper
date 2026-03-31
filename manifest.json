@@ -1,7 +1,7 @@
 {
   "manifest_version": 2,
   "name": "UUID Clipper",
-  "version": "1.0",
+  "version": "1.1",
   "description": "Generate and copy a random UUID to clipboard with one click",
   "browser_specific_settings": {
     "gecko": {
@@ -15,7 +15,7 @@
       "strict_min_version": "95.0"
     }
   },
-  "permissions": ["clipboardWrite"],
+  "permissions": ["clipboardWrite", "contextMenus", "activeTab"],
   "browser_action": {
     "default_title": "Copy new UUID",
     "default_icon": {

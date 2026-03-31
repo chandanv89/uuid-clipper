@@ -5,6 +5,7 @@ A minimal Firefox extension that generates a random UUID and copies it to your c
 ## Features
 
 - One-click UUID generation from the toolbar
+- Right-click context menu to paste a new UUID directly into any editable text field
 - Uses the browser's built-in `crypto.randomUUID()` — no external dependencies
 - Brief ✓ badge confirms the copy
 - Zero data collection, zero network requests
@@ -68,13 +69,15 @@ uuid-clipper-extension/
 
 ## How It Works
 
-When you click the toolbar icon:
+### Toolbar button
 
 1. `crypto.randomUUID()` generates a v4 UUID
 2. `navigator.clipboard.writeText()` copies it to the clipboard
 3. A ✓ badge appears on the icon for 1.5 seconds to confirm
 
-That's it. No permissions beyond `clipboardWrite`, no data leaves your browser.
+### Context menu
+
+Right-click any editable field (input, textarea, or contentEditable element) and select **Paste new UUID** — a freshly generated UUID is inserted at the cursor position.
 
 ## CI/CD
 
